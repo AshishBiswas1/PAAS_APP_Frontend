@@ -1,16 +1,41 @@
 export default function Footer() {
   return (
-    <footer>
-      <div className="footer-root">
-        <h3 className="text-xl sm:text-2xl font-semibold mb-4 text-indigo-200">Questions or custom setup?</h3>
-        <a href="mailto:support@apisurge.io" className="underline text-indigo-300 mb-4 text-lg font-medium">support@apisurge.io</a>
-        <p className="mb-6 font-medium text-lg">We'll help you craft your perfect testing stack, every step of the way.</p>
-        <div className="footer-links mb-6">
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms of Service</a>
+    <footer className="border-t border-neutral-200">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 grid md:grid-cols-4 gap-8">
+        <div>
+          <div className="flex items-center gap-2">
+            <div className="h-8 w-8 rounded-lg bg-brand-600"></div>
+            <span className="font-semibold">PulseAPI</span>
+          </div>
+          <p className="mt-3 text-sm text-neutral-600">Modern API testing for teams who move fast.</p>
         </div>
-        <span className="text-sm text-gray-400">&copy; 2025 apisurge. All rights reserved.</span>
+        <div>
+          <h3 className="text-sm font-semibold">Product</h3>
+          <ul className="mt-3 space-y-2 text-sm text-neutral-600">
+            <li><a href="#features">Features</a></li>
+            <li><a href="#api-demo">Live Demo</a></li>
+            <li><a href="#reviews">Reviews</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 className="text-sm font-semibold">Resources</h3>
+          <ul className="mt-3 space-y-2 text-sm text-neutral-600">
+            <li><a href="#">Docs</a></li>
+            <li><a href="#">CLI</a></li>
+            <li><a href="#">Status</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 className="text-sm font-semibold">Get updates</h3>
+          <form className="mt-3 flex gap-2">
+            <input type="email" placeholder="you@example.com" className="flex-1 rounded-md border border-neutral-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-600" />
+            <button className="rounded-md bg-neutral-900 text-white text-sm px-4 py-2">Subscribe</button>
+          </form>
+        </div>
+      </div>
+      <div className="border-t border-neutral-200 py-6 text-center text-sm text-neutral-500">
+        © {new Date().getFullYear()} PulseAPI. All rights reserved.
       </div>
     </footer>
-  );
+  )
 }
