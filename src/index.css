@@ -1,121 +1,123 @@
-/* Tailwind layers must come first */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Global defaults (based on Vite starter) */
+/* Theme variables (light by default); toggled by html.dark) */
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
+  --bg-gradient: linear-gradient(120deg, #eef2ff 0%, #ede9fe 50%, #f3e8ff 100%);
+  --page-text: #0f172a;
+  --muted-text: #6b7280;
+  --card-bg: rgba(255,255,255,0.85);
+  --glass-bg: rgba(255,255,255,0.7);
+  --nav-backdrop: rgba(255,255,255,0.06);
+  --logo-glow: rgba(168,85,247,0.25);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+html.dark {
+  --bg-gradient: linear-gradient(140deg, #071120 0%, #0b1220 50%, #060814 100%);
+  --page-text: #e6eef8;
+  --muted-text: #94a3b8;
+  --card-bg: rgba(10, 16, 25, 0.62);
+  --glass-bg: rgba(8, 12, 18, 0.5);
+  --nav-backdrop: rgba(255,255,255,0.03);
+  --logo-glow: rgba(99,102,241,0.12);
 }
 
-body {
-  margin: 0;
-  min-width: 320px;
+html, body {
   min-height: 100vh;
+  background: var(--bg-gradient);
+  color: var(--page-text);
+  transition: background .35s ease, color .35s ease;
+  overflow-x: hidden;
 }
 
-/* Headings/buttons from Vite starter */
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+/* Link accent used in marketing sections; app area stays neutral */
+main a, section a, footer a {
+  font-weight: 600;
+  color: inherit;
+  background: linear-gradient(90deg,#6366f1 40%,#818cf8 60%,#a78bfa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-decoration: none;
+  transition: background 0.3s, text-decoration-color 0.17s;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+/* Glass card helper for translucent surfaces */
+.card-glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(26px) saturate(120%);
 }
 
-/* Light scheme overrides */
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
-}
-
-/* ——— Custom utilities for your landing page ——— */
-
-/* 1) Vertical fade mask for scrollable code window */
+/* Scroll fade + sticky helpers reused from landing */
 .mask-fade-y {
-  -webkit-mask-image: linear-gradient(
-    to bottom,
-    transparent 0%,
-    black 10%,
-    black 90%,
-    transparent 100%
-  );
-  mask-image: linear-gradient(
-    to bottom,
-    transparent 0%,
-    black 10%,
-    black 90%,
-    transparent 100%
-  );
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
   -webkit-mask-size: 100% 100%;
   mask-size: 100% 100%;
 }
+.sticky-window { position: sticky; top: 6rem; }
 
-/* 2) Sticky window helper for the API response card */
-.sticky-window {
-  position: sticky;
-  top: 6rem; /* keep clear of fixed navbar */
+.mask-fade-y::-webkit-scrollbar { width: 10px; }
+.mask-fade-y::-webkit-scrollbar-thumb { background: rgba(120, 120, 120, 0.35); border-radius: 8px; }
+
+/* Minimal compatibility so some non-dark utilities adapt with variables */
+[class*='bg-white'] { background-color: var(--card-bg) !important; }
+.text-neutral-900, .text-neutral-800 { color: var(--page-text) !important; }
+.text-neutral-700, .text-neutral-600 { color: var(--muted-text) !important; }
+
+/* Editor monospace defaults for request/response areas */
+pre, code, kbd, samp, .font-mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
 }
 
-/* 3) Optional: nicer thin scrollbar in WebKit */
-.mask-fade-y::-webkit-scrollbar {
-  width: 10px;
+/* Resizable split handles */
+.cursor-col-resize {
+  position: relative;
 }
-.mask-fade-y::-webkit-scrollbar-thumb {
-  background: rgba(120, 120, 120, 0.35);
-  border-radius: 8px;
+.cursor-col-resize::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 2px;
+  background: transparent;
+}
+.cursor-col-resize:hover::before {
+  background: rgba(99,102,241,.35);
 }
 
-/* 4) Reduce motion for users who prefer it */
+/* Response iframe resets */
+iframe {
+  border: 0;
+}
+
+/* Reduced motion respect */
 @media (prefers-reduced-motion: reduce) {
   * {
-    animation-duration: 0.01ms !important;
+    animation-duration: .01ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+    transition-duration: .01ms !important;
     scroll-behavior: auto !important;
   }
 }
+
+/* Light-mode chrome buttons */
+.icon-btn.light {
+  height: 28px;
+  width: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb; /* neutral-200 */
+  color: #111827;            /* neutral-900 */
+}
+
+/* Split handle hover hint */
+.cursor-col-resize { position: relative; }
+.cursor-col-resize::before { content:""; position:absolute; inset:0; background:transparent; }
+.cursor-col-resize:hover::before { background: rgba(99,102,241,.25); }
