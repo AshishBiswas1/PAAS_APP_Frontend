@@ -1020,6 +1020,8 @@ export default function ApiTester() {
         res_status: parsedStatus,
         statusmessage: statusMessage
       };
+      
+      console.log('Saving API with payload:', savePayload);
 
       const saveRes = await fetch(`${API_BASE}/api/paas/url/save`, {
         method: 'POST',
