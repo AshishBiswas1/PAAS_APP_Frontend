@@ -170,9 +170,45 @@ export default function ApiTester() {
     };
     setCollections((prev) => [copy, ...prev]);
   };
-  const deleteCollection = (id) => {
-    if (!confirm('Delete this collection?')) return;
-    setCollections((prev) => prev.filter((c) => c.id !== id));
+  const deleteCollection = async (id) => {
+    if (!confirm('Delete this collection? This will also delete all folders and APIs within it.')) return;
+    try {
+      const token = localStorage.getItem('token');
+      const headers = { 'Content-Type': 'application/json' };
+      if (token) headers['Authorization'] = `Bearer ${token}`;
+      
+      const res = await fetch(
+        `${API_BASE}/api/paas/collection/deleteCollection/${id}`,
+        {
+          method: 'DELETE',
+          headers
+        }
+      );
+      
+      const json = await res.json();
+      if (!res.ok) {
+        throw new Error(json.message || 'Failed to delete collection');
+      }
+      
+      // Remove from local state
+      setCollections((prev) => prev.filter((c) => c.id !== id));
+      
+      // Remove from workspace collections mapping
+      const map = getWorkspaceCollections();
+      Object.keys(map).forEach(workspaceId => {
+        map[workspaceId] = map[workspaceId].filter(colId => colId !== id);
+      });
+      setWorkspaceCollections(map);
+      
+      import('../lib/alert').then((m) =>
+        m.default('Collection deleted successfully', 'success')
+      );
+    } catch (err) {
+      console.error('Delete collection error:', err);
+      import('../lib/alert').then((m) =>
+        m.default('Delete failed: ' + (err.message || err), 'error')
+      );
+    }
   };
   const addRequestTo = (colId) => {
     const name = window.prompt('Request label (e.g. GET /v1/me)');
@@ -1020,7 +1056,7 @@ export default function ApiTester() {
         res_status: parsedStatus,
         statusmessage: statusMessage
       };
-      
+
       console.log('Saving API with payload:', savePayload);
 
       const saveRes = await fetch(`${API_BASE}/api/paas/url/save`, {
