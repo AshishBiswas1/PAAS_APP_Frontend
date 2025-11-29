@@ -171,12 +171,17 @@ export default function ApiTester() {
     setCollections((prev) => [copy, ...prev]);
   };
   const deleteCollection = async (id) => {
-    if (!confirm('Delete this collection? This will also delete all folders and APIs within it.')) return;
+    if (
+      !confirm(
+        'Delete this collection? This will also delete all folders and APIs within it.'
+      )
+    )
+      return;
     try {
       const token = localStorage.getItem('token');
       const headers = { 'Content-Type': 'application/json' };
       if (token) headers['Authorization'] = `Bearer ${token}`;
-      
+
       const res = await fetch(
         `${API_BASE}/api/paas/collection/deleteCollection/${id}`,
         {
@@ -184,22 +189,22 @@ export default function ApiTester() {
           headers
         }
       );
-      
+
       const json = await res.json();
       if (!res.ok) {
         throw new Error(json.message || 'Failed to delete collection');
       }
-      
+
       // Remove from local state
       setCollections((prev) => prev.filter((c) => c.id !== id));
-      
+
       // Remove from workspace collections mapping
       const map = getWorkspaceCollections();
-      Object.keys(map).forEach(workspaceId => {
-        map[workspaceId] = map[workspaceId].filter(colId => colId !== id);
+      Object.keys(map).forEach((workspaceId) => {
+        map[workspaceId] = map[workspaceId].filter((colId) => colId !== id);
       });
       setWorkspaceCollections(map);
-      
+
       import('../lib/alert').then((m) =>
         m.default('Collection deleted successfully', 'success')
       );
@@ -709,7 +714,7 @@ export default function ApiTester() {
 
   // Request builder state
   const [method, setMethod] = useState('GET');
-  const [url, setUrl] = useState('https://api.pulse.dev/v1/welcome');
+  const [url, setUrl] = useState('https://api.claritypi.dev/v1/welcome');
   const [activeReqTab, setActiveReqTab] = useState('params');
   const [params, setParams] = useState([]);
   const [headers, setHeaders] = useState([

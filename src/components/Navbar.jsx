@@ -56,9 +56,9 @@ export default function Navbar() {
     <nav className="fixed inset-x-0 top-0 z-50 bg-white/70 dark:bg-slate-900/80 backdrop-blur border-b border-neutral-200 dark:border-neutral-800">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2">
-          <div className="h-8 w-8 rounded-lg bg-brand-600 dark:bg-indigo-400" />
+          <img src="/logo.png" alt="ClarityPI" className="h-8 w-8 rounded-lg" />
           <span className="font-semibold text-neutral-900 dark:text-neutral-100">
-            PulseAPI
+            ClarityPI
           </span>
         </Link>
 
